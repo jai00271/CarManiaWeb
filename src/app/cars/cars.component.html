@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Car Mania</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Main CSS-->
+  <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+  <!-- Font-icon css-->
+  <link rel="stylesheet" type="text/css"
+    href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body class="app sidebar-mini rtl">
+  <header class="app-header"><a class="app-header__logo" href="index.html">Car Mania</a>
+    <!-- Sidebar toggle button<a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
+       Navbar Right Menu-->
+    <ul class="app-nav">
+      <!--Notification Menu-->
+      <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Show notifications"><i
+            class="fa fa-bell-o fa-lg"></i></a>
+        <ul class="app-notification dropdown-menu dropdown-menu-right">
+          <li class="app-notification__title">You have 4 new notifications.</li>
+          <div class="app-notification__content">
+            <li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span
+                    class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-primary"></i><i
+                      class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></span>
+                <div>
+                  <p class="app-notification__message">Lisa sent you a mail</p>
+                  <p class="app-notification__meta">2 min ago</p>
+                </div>
+              </a></li>
+            <li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span
+                    class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-danger"></i><i
+                      class="fa fa-hdd-o fa-stack-1x fa-inverse"></i></span></span>
+                <div>
+                  <p class="app-notification__message">Mail server not working</p>
+                  <p class="app-notification__meta">5 min ago</p>
+                </div>
+              </a></li>
+            <li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span
+                    class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-success"></i><i
+                      class="fa fa-money fa-stack-1x fa-inverse"></i></span></span>
+                <div>
+                  <p class="app-notification__message">Transaction complete</p>
+                  <p class="app-notification__meta">2 days ago</p>
+                </div>
+              </a></li>
+            <div class="app-notification__content">
+              <li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span
+                      class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-primary"></i><i
+                        class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></span>
+                  <div>
+                    <p class="app-notification__message">Lisa sent you a mail</p>
+                    <p class="app-notification__meta">2 min ago</p>
+                  </div>
+                </a></li>
+              <li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span
+                      class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-danger"></i><i
+                        class="fa fa-hdd-o fa-stack-1x fa-inverse"></i></span></span>
+                  <div>
+                    <p class="app-notification__message">Mail server not working</p>
+                    <p class="app-notification__meta">5 min ago</p>
+                  </div>
+                </a></li>
+              <li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span
+                      class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-success"></i><i
+                        class="fa fa-money fa-stack-1x fa-inverse"></i></span></span>
+                  <div>
+                    <p class="app-notification__message">Transaction complete</p>
+                    <p class="app-notification__meta">2 days ago</p>
+                  </div>
+                </a></li>
+            </div>
+          </div>
+          <li class="app-notification__footer"><a href="#">See all notifications.</a></li>
+        </ul>
+      </li>
+      <!-- User Menu-->
+      <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i
+            class="fa fa-user fa-lg"></i></a>
+        <ul class="dropdown-menu settings-menu dropdown-menu-right">
+          <li><a class="dropdown-item" href="page-user.html"><i class="fa fa-cog fa-lg"></i> Settings</a></li>
+          <li><a class="dropdown-item" href="page-user.html"><i class="fa fa-user fa-lg"></i> Profile</a></li>
+          <li><a class="dropdown-item" href="page-login.html"><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
+        </ul>
+      </li>
+    </ul>
+  </header>
+
+  <main class="app-content">
+    <div class="row user">
+      <div class="col-md-2">
+      </div>
+      <div class="col-md-10">
+        <!-- <ul>
+          <li class="app-search">
+            <input class="app-search__input" type="search" placeholder="Search">
+            <button class="app-search__button"><i class="fa fa-search"></i></button>
+          </li>
+        </ul> -->
+        <!-- <div class="search-results">
+        <input [value]="search" ngxTypeahead [taUrl]="url" [taParams]="params"
+          (taSelected)="handleResultSelected($event)">
+        </div> -->
+    </div>
+    </div>
+    <div class="row user">
+
+      <div class="col-md-3">
+        <div class="tile p-0">
+          <ul class="nav flex-column nav-tabs user-tabs">
+            <li class="nav-item" *ngFor="let cars of cars">
+              <a class="nav-link active show" data-toggle="tab" (click)='getCar(cars.id)'>{{ cars.carName }}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-md-9">
+
+        <div class="tab-content">
+          <div class="tab-pane active" id="user-timeline">
+            <div class="row user">
+              <div class="col-md-8">
+                <div class="tile">
+                  <h3 class="tile-title">{{car.carName}}</h3>
+                  <div class="tile-body"><img src="{{car.carImageUrl}}" class="img-fluid"></div>
+                  <div class="tile-body">&nbsp;</div>
+                  <div class="tile-body">
+                    <div class="timeline-post">
+                      <ul class="post-utility">
+                        <li class="likes"><a href="#"><i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like</a></li>
+                      </ul>
+                    </div>
+                    <div class="messanger">
+                      <div class="sender">
+                        <input type="text" placeholder="Please Write your comments here">
+                        <button class="btn btn-primary" type="button"><i
+                            class="fa fa-lg fa-fw fa-paper-plane"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="timeline-post">
+                  <div class="post-media"><a href="#"><img
+                        src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg"></a>
+                    <div class="content">
+                      <h5><a href="#">John Doe</a></h5>
+                      <p class="text-muted"><small>2 January at 9:30</small></p>
+                    </div>
+                  </div>
+                  <div class="post-content">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                      labore et dolore magna aliqua. </p>
+                  </div>
+                  <ul class="post-utility">
+                    <li class="likes"><a href="#"><i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like</a></li>
+                    <li class="shares"><a href="#"><i class="fa fa-fw fa-lg fa-share"></i>Share</a></li>
+                    <li class="comments"><i class="fa fa-fw fa-lg fa-comment-o"></i> 5 Comments</li>
+                  </ul>
+                </div>
+                <div class="timeline-post">
+                  <div class="post-media"><a href="#"><img
+                        src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg"></a>
+                    <div class="content">
+                      <h5><a href="#">John Doe</a></h5>
+                      <p class="text-muted"><small>2 January at 9:30</small></p>
+                    </div>
+                  </div>
+                  <div class="post-content">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                      labore et dolore magna aliqua. Ut enim ad minim veniam, quis tion ullamco laboris nisi ut aliquip
+                      ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+                      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+                      officia deserunt mollit anim id est laborum.</p>
+                  </div>
+                  <ul class="post-utility">
+                    <li class="likes"><a href="#"><i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like</a></li>
+                    <li class="shares"><a href="#"><i class="fa fa-fw fa-lg fa-share"></i>Share</a></li>
+                    <li class="comments"><i class="fa fa-fw fa-lg fa-comment-o"></i> 5 Comments</li>
+                  </ul>
+                </div>
+
+
+              </div>
+              <div class="col-md-4">
+                <div class="tile">
+                  <h3 class="tile-title">Ford Mustang GT</h3>
+                  <div class="tile-body">{{car.carDesc}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="tab-pane fade" id="user-settings">
+            <div class="row user">
+              <div class="col-md-8">
+                <div class="tile">
+                  <h3 class="tile-title">McLaren P1</h3>
+                  <!-- <div class="tile-body"><img src="images/mclaren.jpg" class="img-fluid"></div> -->
+                  <div class="tile-body">&nbsp;</div>
+                  <div class="tile-body">
+                    <div class="timeline-post">
+                      <ul class="post-utility">
+                        <li class="likes"><a href="#"><i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like</a></li>
+                      </ul>
+                    </div>
+                    <div class="messanger">
+                      <div class="sender">
+                        <input type="text" placeholder="Please Write your comments here">
+                        <button class="btn btn-primary" type="button"><i
+                            class="fa fa-lg fa-fw fa-paper-plane"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="timeline-post">
+                  <div class="post-media"><a href="#"><img
+                        src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg"></a>
+                    <div class="content">
+                      <h5><a href="#">John Doe</a></h5>
+                      <p class="text-muted"><small>2 January at 9:30</small></p>
+                    </div>
+                  </div>
+                  <div class="post-content">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                      labore et dolore magna aliqua. Ut enim ad minim veniam, quis tion ullamco laboris nisi ut aliquip
+                      ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+                      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+                      officia deserunt mollit anim id est laborum.</p>
+                  </div>
+                  <ul class="post-utility">
+                    <li class="likes"><a href="#"><i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like</a></li>
+                    <li class="shares"><a href="#"><i class="fa fa-fw fa-lg fa-share"></i>Share</a></li>
+                    <li class="comments"><i class="fa fa-fw fa-lg fa-comment-o"></i> 5 Comments</li>
+                  </ul>
+                </div>
+                <div class="timeline-post">
+                  <div class="post-media"><a href="#"><img
+                        src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg"></a>
+                    <div class="content">
+                      <h5><a href="#">John Doe</a></h5>
+                      <p class="text-muted"><small>2 January at 9:30</small></p>
+                    </div>
+                  </div>
+                  <div class="post-content">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                      labore et dolore magna aliqua. Ut enim ad minim veniam, quis tion ullamco laboris nisi ut aliquip
+                      ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+                      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+                      officia deserunt mollit anim id est laborum.</p>
+                  </div>
+                  <ul class="post-utility">
+                    <li class="likes"><a href="#"><i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like</a></li>
+                    <li class="shares"><a href="#"><i class="fa fa-fw fa-lg fa-share"></i>Share</a></li>
+                    <li class="comments"><i class="fa fa-fw fa-lg fa-comment-o"></i> 5 Comments</li>
+                  </ul>
+                </div>
+
+              </div>
+              <div class="col-md-4">
+                <!-- <div class="tile">
+                  <h3 class="tile-title">McLaren P1</h3>
+                  <div class="tile-body">The McLaren P1 is a British limited-production plug-in hybrid sports car
+                    produced by McLaren Automotive. Debuted at the 2012 Paris Motor Show,[5] retail began in the UK in
+                    October 2013 and all 375 units were sold out by November. Production ended in early December
+                    2015.[8] The United States accounted for 34% of the units and Europe for 26%.It is considered to be
+                    the successor to the F1, utilising hybrid power and Formula 1 technology, but does not have the same
+                    three-seat layout. It was later confirmed that the Speedtail served as the actual successor to the
+                    F1. Like the F1, the P1 has a mid-engine, rear wheel drive design that used a carbon fibre monocoque
+                    and roof structure safety cage concept called MonoCage, which is a development of the MonoCell first
+                    used in the MP4-12C and then in subsequent models. Its main competitors were the LaFerrari and the
+                    Porsche 918. They are all similar in specifications and performance, and in a race around
+                    Silverstone circuit they were all within half a second of each other, the P1 finishing first at
+                    58.24 seconds and the LaFerrari finishing last at 58.58 seconds; the 918 was in-between with 58.46
+                    seconds.P1 GTR (58 units)[10] and P1 LM (5 units) variants were produced after the initial run of
+                    375 cars.</div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+
+
+          <div class="tab-pane fade" id="Lambo">
+            <div class="row user">
+              <div class="col-md-8">
+                <!--               <ul class="app-nav">
+        <li class="app-search">
+          <input class="app-search__input" type="search" placeholder="Search">
+          <button class="app-search__button"><i class="fa fa-search"></i></button>
+        </li>
+      </ul> -->
+                <div class="tile">
+                  <h3 class="tile-title">Lambhorghini Huracan</h3>
+                  <!-- <div class="tile-body"><img src="images/lambo.jpg" class="img-fluid"></div> -->
+                  <div class="tile-body">&nbsp;</div>
+                  <div class="tile-body">
+                    <div class="timeline-post">
+                      <ul class="post-utility">
+                        <li class="likes"><a href="#"><i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like</a></li>
+                      </ul>
+                    </div>
+                    <div class="messanger">
+                      <div class="sender">
+                        <input type="text" placeholder="Please Write your comments here">
+                        <button class="btn btn-primary" type="button"><i
+                            class="fa fa-lg fa-fw fa-paper-plane"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="timeline-post">
+                  <div class="post-media"><a href="#"><img
+                        src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg"></a>
+                    <div class="content">
+                      <h5><a href="#">John Doe</a></h5>
+                      <p class="text-muted"><small>2 January at 9:30</small></p>
+                    </div>
+                  </div>
+                  <div class="post-content">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                      labore et dolore magna aliqua. Ut enim ad minim veniam, quis tion ullamco laboris nisi ut aliquip
+                      ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+                      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+                      officia deserunt mollit anim id est laborum.</p>
+                  </div>
+                  <ul class="post-utility">
+                    <li class="likes"><a href="#"><i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like</a></li>
+                    <li class="shares"><a href="#"><i class="fa fa-fw fa-lg fa-share"></i>Share</a></li>
+                    <li class="comments"><i class="fa fa-fw fa-lg fa-comment-o"></i> 5 Comments</li>
+                  </ul>
+                </div>
+                <div class="timeline-post">
+                  <div class="post-media"><a href="#"><img
+                        src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg"></a>
+                    <div class="content">
+                      <h5><a href="#">John Doe</a></h5>
+                      <p class="text-muted"><small>2 January at 9:30</small></p>
+                    </div>
+                  </div>
+                  <div class="post-content">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                      labore et dolore magna aliqua. Ut enim ad minim veniam, quis tion ullamco laboris nisi ut aliquip
+                      ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+                      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+                      officia deserunt mollit anim id est laborum.</p>
+                  </div>
+                  <ul class="post-utility">
+                    <li class="likes"><a href="#"><i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like</a></li>
+                    <li class="shares"><a href="#"><i class="fa fa-fw fa-lg fa-share"></i>Share</a></li>
+                    <li class="comments"><i class="fa fa-fw fa-lg fa-comment-o"></i> 5 Comments</li>
+                  </ul>
+                </div>
+
+              </div>
+              <div class="col-md-4">
+                <!-- <div class="tile">
+                  <h3 class="tile-title">Lambhorghini Huracan</h3>
+                  <div class="tile-body">The McLaren P1 is a British limited-production plug-in hybrid sports car
+                    produced by McLaren Automotive. Debuted at the 2012 Paris Motor Show,[5] retail began in the UK in
+                    October 2013 and all 375 units were sold out by November. Production ended in early December
+                    2015.[8] The United States accounted for 34% of the units and Europe for 26%.It is considered to be
+                    the successor to the F1, utilising hybrid power and Formula 1 technology, but does not have the same
+                    three-seat layout. It was later confirmed that the Speedtail served as the actual successor to the
+                    F1. Like the F1, the P1 has a mid-engine, rear wheel drive design that used a carbon fibre monocoque
+                    and roof structure safety cage concept called MonoCage, which is a development of the MonoCell first
+                    used in the MP4-12C and then in subsequent models. Its main competitors were the LaFerrari and the
+                    Porsche 918. They are all similar in specifications and performance, and in a race around
+                    Silverstone circuit they were all within half a second of each other, the P1 finishing first at
+                    58.24 seconds and the LaFerrari finishing last at 58.58 seconds; the 918 was in-between with 58.46
+                    seconds.P1 GTR (58 units)[10] and P1 LM (5 units) variants were produced after the initial run of
+                    375 cars.</div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="bugg">
+            <div class="row user">
+              <div class="col-md-8">
+                <!--               <ul class="app-nav">
+        <li class="app-search">
+          <input class="app-search__input" type="search" placeholder="Search">
+          <button class="app-search__button"><i class="fa fa-search"></i></button>
+        </li>
+      </ul> -->
+                <div class="tile">
+                  <h3 class="tile-title">Buggati Chiron</h3>
+                  <!-- <div class="tile-body"><img src="images/buggati.png" class="img-fluid"></div> -->
+                  <div class="tile-body">&nbsp;</div>
+                  <div class="tile-body">
+                    <div class="timeline-post">
+                      <ul class="post-utility">
+                        <li class="likes"><a href="#"><i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like</a></li>
+                      </ul>
+                    </div>
+                    <div class="messanger">
+                      <div class="sender">
+                        <input type="text" placeholder="Please Write your comments here">
+                        <button class="btn btn-primary" type="button"><i
+                            class="fa fa-lg fa-fw fa-paper-plane"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="timeline-post">
+                  <div class="post-media"><a href="#"><img
+                        src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg"></a>
+                    <div class="content">
+                      <h5><a href="#">John Doe</a></h5>
+                      <p class="text-muted"><small>2 January at 9:30</small></p>
+                    </div>
+                  </div>
+                  <div class="post-content">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                      labore et dolore magna aliqua. Ut enim ad minim veniam, quis tion ullamco laboris nisi ut aliquip
+                      ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+                      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+                      officia deserunt mollit anim id est laborum.</p>
+                  </div>
+                  <ul class="post-utility">
+                    <li class="likes"><a href="#"><i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like</a></li>
+                    <li class="shares"><a href="#"><i class="fa fa-fw fa-lg fa-share"></i>Share</a></li>
+                    <li class="comments"><i class="fa fa-fw fa-lg fa-comment-o"></i> 5 Comments</li>
+                  </ul>
+                </div>
+                <div class="timeline-post">
+                  <div class="post-media"><a href="#"><img
+                        src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg"></a>
+                    <div class="content">
+                      <h5><a href="#">John Doe</a></h5>
+                      <p class="text-muted"><small>2 January at 9:30</small></p>
+                    </div>
+                  </div>
+                  <div class="post-content">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                      labore et dolore magna aliqua. Ut enim ad minim veniam, quis tion ullamco laboris nisi ut aliquip
+                      ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+                      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+                      officia deserunt mollit anim id est laborum.</p>
+                  </div>
+                  <ul class="post-utility">
+                    <li class="likes"><a href="#"><i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like</a></li>
+                    <li class="shares"><a href="#"><i class="fa fa-fw fa-lg fa-share"></i>Share</a></li>
+                    <li class="comments"><i class="fa fa-fw fa-lg fa-comment-o"></i> 5 Comments</li>
+                  </ul>
+                </div>
+
+              </div>
+              <div class="col-md-4">
+                <!-- <div class="tile">
+                  <h3 class="tile-title">Buggati Chiron</h3>
+                  <div class="tile-body">The McLaren P1 is a British limited-production plug-in hybrid sports car
+                    produced by McLaren Automotive. Debuted at the 2012 Paris Motor Show,[5] retail began in the UK in
+                    October 2013 and all 375 units were sold out by November. Production ended in early December
+                    2015.[8] The United States accounted for 34% of the units and Europe for 26%.It is considered to be
+                    the successor to the F1, utilising hybrid power and Formula 1 technology, but does not have the same
+                    three-seat layout. It was later confirmed that the Speedtail served as the actual successor to the
+                    F1. Like the F1, the P1 has a mid-engine, rear wheel drive design that used a carbon fibre monocoque
+                    and roof structure safety cage concept called MonoCage, which is a development of the MonoCell first
+                    used in the MP4-12C and then in subsequent models. Its main competitors were the LaFerrari and the
+                    Porsche 918. They are all similar in specifications and performance, and in a race around
+                    Silverstone circuit they were all within half a second of each other, the P1 finishing first at
+                    58.24 seconds and the LaFerrari finishing last at 58.58 seconds; the 918 was in-between with 58.46
+                    seconds.P1 GTR (58 units)[10] and P1 LM (5 units) variants were produced after the initial run of
+                    375 cars.</div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+
+      </div>
+
+
+
+    </div>
+  </main>
+  <!-- Essential javascripts for application to work-->
+  <script src="js/jquery-3.2.1.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/main.js"></script>
+  <!-- The javascript plugin to display page loading on top-->
+  <script src="js/plugins/pace.min.js"></script>
+  <!-- Page specific javascripts-->
+  <script type="text/javascript" src="js/plugins/chart.js"></script>
+  <script type="text/javascript">
+    var data = {
+      labels: ["January", "February", "March", "April", "May"],
+      datasets: [
+        {
+          label: "My First dataset",
+          fillColor: "rgba(220,220,220,0.2)",
+          strokeColor: "rgba(220,220,220,1)",
+          pointColor: "rgba(220,220,220,1)",
+          pointStrokeColor: "#fff",
+          pointHighlightFill: "#fff",
+          pointHighlightStroke: "rgba(220,220,220,1)",
+          data: [65, 59, 80, 81, 56]
+        },
+        {
+          label: "My Second dataset",
+          fillColor: "rgba(151,187,205,0.2)",
+          strokeColor: "rgba(151,187,205,1)",
+          pointColor: "rgba(151,187,205,1)",
+          pointStrokeColor: "#fff",
+          pointHighlightFill: "#fff",
+          pointHighlightStroke: "rgba(151,187,205,1)",
+          data: [28, 48, 40, 19, 86]
+        }
+      ]
+    };
+    var pdata = [
+      {
+        value: 300,
+        color: "#46BFBD",
+        highlight: "#5AD3D1",
+        label: "Complete"
+      },
+      {
+        value: 50,
+        color: "#F7464A",
+        highlight: "#FF5A5E",
+        label: "In-Progress"
+      }
+    ]
+
+    var ctxl = $("#lineChartDemo").get(0).getContext("2d");
+    var lineChart = new Chart(ctxl).Line(data);
+
+    var ctxp = $("#pieChartDemo").get(0).getContext("2d");
+    var pieChart = new Chart(ctxp).Pie(pdata);
+  </script>
+  <!-- Google analytics script-->
+  <script type="text/javascript">
+    if (document.location.hostname == 'pratikborsadiya.in') {
+      (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+          (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+          m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+      ga('create', 'UA-72504830-1', 'auto');
+      ga('send', 'pageview');
+    }
+  </script>
+</body>
+
+</html>
