@@ -95,17 +95,18 @@
       <div class="col-md-2">
       </div>
       <div class="col-md-10">
-        <!-- <ul>
+        <ul>
           <li class="app-search">
-            <input class="app-search__input" type="search" placeholder="Search">
-            <button class="app-search__button"><i class="fa fa-search"></i></button>
+            <section class="col-sm-12">
+              <div class="search-results style-3">
+                <input  class="app-search__input" type="search" placeholder="Search" ngxTypeahead
+                   [value]="query" [taList]="staticList" (taSelected)="handleStaticResultSelected($event)">
+                  <!-- class="col-sm-12 form-control" -->
+              </div>
+            </section>
           </li>
-        </ul> -->
-        <!-- <div class="search-results">
-        <input [value]="search" ngxTypeahead [taUrl]="url" [taParams]="params"
-          (taSelected)="handleResultSelected($event)">
-        </div> -->
-    </div>
+        </ul>
+      </div>
     </div>
     <div class="row user">
 

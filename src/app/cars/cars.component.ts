@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 // import { HttpClient } from 'selenium-webdriver/http';
 import { HttpClient } from '@angular/common/http';
 import { CarsEntity } from './cars.data';
-import {Observable} from 'rxjs';
-import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 
 const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'California', 'Colorado',
   'Connecticut', 'Delaware', 'District Of Columbia', 'Federated States Of Micronesia', 'Florida', 'Georgia',
@@ -23,19 +21,14 @@ export class CarsComponent implements OnInit {
 
   carsUrl = "http://localhost:3000/api/carsmania";
   carUrl = "http://localhost:3000/api/carsmania/";
+  // carsUrl = "http://52.14.178.44:3000/api/carsmania";
+  // carUrl = "http://52.14.178.44:3000/api/carsmania/";
   car: CarsEntity;
   cars: Array<CarsEntity> = [];
   showCarDetail: boolean;
 
-  public url = 'http://suggestqueries.google.com/complete/search';
-  public params = {
-    hl: 'en',
-    ds: 'yt',
-    xhr: 't',
-    client: 'youtube',
-    //q: query
-  };
-  public search = '';
+  public staticList = [];
+  public query = '';
 
   constructor(private http: HttpClient) {
     this.car = new CarsEntity();
@@ -45,6 +38,7 @@ export class CarsComponent implements OnInit {
     this.getCars().subscribe(
       (data) => {
         this.cars = data as CarsEntity[];
+        this.staticList = this.cars.map(function(a) {return a["carName"];});
         this.car = this.cars[0];
       }
     );
@@ -61,7 +55,11 @@ export class CarsComponent implements OnInit {
     )
   }
 
-  handleResultSelected(result) {
-    this.search = result;
+  handleStaticResultSelected(result) {
+    //this.search = result;
+    this.car = this.cars.filter(function(item) {
+      return item.carName === result;
+    })[0];
+    this.car;
   }
 }
