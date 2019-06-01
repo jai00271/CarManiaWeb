@@ -19,7 +19,9 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     NgxTypeaheadModule,
     RouterModule.forRoot([
+      { path: '', redirectTo: 'cars', pathMatch: 'full' },
       { path: 'cars', component: CarsComponent },
+      { path: '**', redirectTo: 'cars' }
     ])
   ],
   providers: [],
