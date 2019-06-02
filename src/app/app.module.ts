@@ -7,11 +7,15 @@ import { NgxTypeaheadModule } from 'ngx-typeahead';
 import { AppComponent } from './app.component';
 import { CarsComponent } from './cars/cars.component';
 import { HttpClientModule } from '@angular/common/http';
+import { LoginComponent } from './login/login.component';
+import { CreateCarsManiaComponent } from './create-cars-mania/create-cars-mania.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CarsComponent
+    CarsComponent,
+    LoginComponent,
+    CreateCarsManiaComponent
   ],
   imports: [
     BrowserModule,
@@ -19,9 +23,11 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     NgxTypeaheadModule,
     RouterModule.forRoot([
-      { path: '', redirectTo: 'cars', pathMatch: 'full' },
+      { path: '', redirectTo: 'login', pathMatch: 'full' },
+      { path: 'login', component: LoginComponent },
       { path: 'cars', component: CarsComponent },
-      { path: '**', redirectTo: 'cars' }
+      { path: 'createcars', component: CreateCarsManiaComponent },
+      { path: '**', redirectTo: 'login' }
     ])
   ],
   providers: [],

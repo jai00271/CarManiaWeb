@@ -1,0 +1,10 @@
+<form class="login-form" #loginForm="ngForm" (ngSubmit)="submit(loginForm)">
+<div style="color: green" ng-if="message">{{ message }}</div>
+  <label for="size" >Car Name</label>
+<input type="text" class="form-control" required name=car.carName [(ngModel)]="car.carName" placeholder="Name">
+<label for="size" >Car Desc</label>
+<input type="text" class="form-control" required name=car.carDesc [(ngModel)]="car.carDesc" placeholder="Description">
+<label for="size" >Car Image Url</label>
+<input type="text" class="form-control" required name=car.carImageUrl [(ngModel)]="car.carImageUrl" placeholder="Image URL">
+<button type="submit">Save</button>
+</form>

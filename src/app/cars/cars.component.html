@@ -114,7 +114,7 @@
         <div class="tile p-0">
           <ul class="nav flex-column nav-tabs user-tabs">
             <li class="nav-item" *ngFor="let cars of cars">
-              <a class="nav-link active show" data-toggle="tab" (click)='getCar(cars.id)'>{{ cars.carName }}</a>
+              <a class="nav-link active show" style="cursor: pointer" data-toggle="tab" (click)='getCar(cars.id)'>{{ cars.carName }}</a>
             </li>
           </ul>
         </div>
