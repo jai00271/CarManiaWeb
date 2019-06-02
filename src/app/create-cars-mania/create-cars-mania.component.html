@@ -1,10 +1,33 @@
 <form class="login-form" #loginForm="ngForm" (ngSubmit)="submit(loginForm)">
-<div style="color: green" ng-if="message">{{ message }}</div>
-  <label for="size" >Car Name</label>
-<input type="text" class="form-control" required name=car.carName [(ngModel)]="car.carName" placeholder="Name">
-<label for="size" >Car Desc</label>
-<input type="text" class="form-control" required name=car.carDesc [(ngModel)]="car.carDesc" placeholder="Description">
-<label for="size" >Car Image Url</label>
-<input type="text" class="form-control" required name=car.carImageUrl [(ngModel)]="car.carImageUrl" placeholder="Image URL">
-<button type="submit">Save</button>
+  <div class="panel panel-default">
+    <div class="panel-heading">Save Cars Info</div>
+    <div class="panel-body">
+        <div class="col-sm-12" style="margin-top: 20px; height:25%">
+        <div style="color: green" ng-if="message">{{ message }}</div>
+        <div class="col-sm-1">
+          <label for="CarName">Car Name</label>
+        </div>
+        <div class="col-sm-1">
+          <input type="text" class="form-control" required name=car.carName [(ngModel)]="car.carName"
+            placeholder="Name">
+        </div>
+        <br />
+        <div class="col-sm-1">
+          <label for="CarDescription">Car Desc</label>
+        </div>
+        <div class="col-sm-1"><input type="text" class="form-control" required name=car.carDesc
+            [(ngModel)]="car.carDesc" placeholder="Description">
+        </div>
+        <br />
+        <div class="col-sm-1">
+          <label for="CarImage">Car Image Url</label>
+        </div>
+        <div class="col-sm-1">
+          <textarea type="text" class="form-control" style="width: 35%; height: 25%" rows="3" required
+            name=car.carImageUrl [(ngModel)]="car.carImageUrl" placeholder="Image URL"></textarea>
+        </div>
+      </div>
+      <button type="submit">Save</button>
+    </div>
+  </div>
 </form>
