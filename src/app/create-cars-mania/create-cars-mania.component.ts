@@ -33,7 +33,7 @@ export class CreateCarsManiaComponent implements OnInit {
     this.Save();
   }
   Save() {
-    this.car.id = this.newGuid().toString();
+    //this.car.id = this.newGuid().toString();
     let body = JSON.stringify(this.car);
     let httpOptions = {
       headers: new HttpHeaders({

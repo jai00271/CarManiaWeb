@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Main CSS-->
+  <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+  <!-- Font-icon css-->
+  <link rel="stylesheet" type="text/css"
+    href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Login - Vali Admin</title>
+</head>
+
+<body>
+  <section class="material-half-bg">
+    <div class="cover"></div>
+  </section>
+  <section class="login-content">
+    <div class="login-box">
+      <form class="login-form" #registrationForm="ngForm" (ngSubmit)="submit(registrationForm)">
+        <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>SIGN IN</h3>
+        <div class="form-group">
+          <label class="control-label">USERNAME</label>
+          <input name=username type="text" #uname="ngModel" class="form-control" required [(ngModel)]="register.username"
+            placeholder="User Name">
+            <div *ngIf="uname.invalid">
+              User name is required.
+            </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">EMAIL</label>
+          <input type="text" class="form-control" required name=register.email [(ngModel)]="register.email"
+            placeholder="Email">
+            <div *ngIf="register.email">
+              Name cannot be Bob.
+            </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">PASSWORD</label>
+          <input class="form-control" type="password" placeholder="Password" required name=register.password
+            [(ngModel)]="register.password">
+            <div *ngIf="register.password">
+              Name cannot be Bob.
+            </div>
+        </div>
+        <div class="form-group">
+          <div style="color: red; font-weight: bold;" ng-if="message">{{ message }}</div>
+        </div>
+        <div class="form-group btn-container">
+          <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-sign-in fa-lg fa-fw"></i>Register</button>
+        </div>
+      </form>
+    </div>
+  </section>
+</body>
+
+</html>

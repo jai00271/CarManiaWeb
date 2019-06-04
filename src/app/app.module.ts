@@ -9,13 +9,15 @@ import { CarsComponent } from './cars/cars.component';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { CreateCarsManiaComponent } from './create-cars-mania/create-cars-mania.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CarsComponent,
     LoginComponent,
-    CreateCarsManiaComponent
+    CreateCarsManiaComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -23,8 +25,9 @@ import { CreateCarsManiaComponent } from './create-cars-mania/create-cars-mania.
     FormsModule,
     NgxTypeaheadModule,
     RouterModule.forRoot([
-      { path: '', redirectTo: 'login', pathMatch: 'full' },
+      //{ path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'login', component: LoginComponent },
+      { path: 'register', component: RegisterComponent },
       { path: 'cars', component: CarsComponent },
       { path: 'createcars', component: CreateCarsManiaComponent },
       { path: '**', redirectTo: 'login' }
