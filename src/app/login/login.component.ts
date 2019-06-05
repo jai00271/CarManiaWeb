@@ -17,7 +17,8 @@ const httpOptions = {
 })
 export class LoginComponent implements OnInit {
 
-  loginUrl: string = "http://localhost:3000/api/Users/login";
+  loginUrl: string = "http://52.14.178.44:3000/api/Users/login";
+  //loginUrl: string = "http://localhost:3000/api/Users/login";
   login: Login;
   loginResponse: LoginResponse;
   isValidFormSubmitted: boolean = false;
@@ -54,8 +55,8 @@ export class LoginComponent implements OnInit {
       }
     )
   }
-  register(){
-    this.router.navigate(['register']);
-  }
+  // register(){
+  //   this.router.navigate(['register']);
+  // }
 }
 LoginResponse

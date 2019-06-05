@@ -12,10 +12,11 @@ import { v4 as uuid } from 'uuid';
 
 export class CreateCarsManiaComponent implements OnInit {
 
+  carSaveUrl: string = "http://52.14.178.44:3000/api/carsmania";
+  //carSaveUrl: string = "http://localhost:3000/api/carsmania";
   car: CarsEntity;
   cars: CarsEntity[];
   isValidFormSubmitted: boolean = false;
-  carSaveUrl: string = "http://localhost:3000/api/carsmania";
   message: string = "";
 
   constructor(private http: HttpClient) {

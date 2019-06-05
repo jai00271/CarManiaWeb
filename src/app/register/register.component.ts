@@ -40,7 +40,7 @@ export class RegisterComponent implements OnInit {
 
     this.http.post(this.registerUrl,body, httpOptions).subscribe(
       (data)=>{
-        this.router.navigate(['/app-cars']);
+        this.router.navigate(['/login']);
       }
     )
   }

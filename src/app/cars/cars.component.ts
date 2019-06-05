@@ -10,10 +10,10 @@ import { CarsEntity } from './cars.data';
 })
 export class CarsComponent implements OnInit {
 
-  carsUrl = "http://localhost:3000/api/carsmania";
-  carUrl = "http://localhost:3000/api/carsmania/";
-  // carsUrl = "http://52.14.178.44:3000/api/carsmania";
-  // carUrl = "http://52.14.178.44:3000/api/carsmania/";
+  //carsUrl = "http://localhost:3000/api/carsmania";
+  //carUrl = "http://localhost:3000/api/carsmania/";
+   carsUrl = "http://52.14.178.44:3000/api/carsmania";
+   carUrl = "http://52.14.178.44:3000/api/carsmania/";
   car: CarsEntity;
   cars: Array<CarsEntity> = [];
   showCarDetail: boolean;
