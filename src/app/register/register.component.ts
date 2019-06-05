@@ -16,7 +16,8 @@ const httpOptions = {
 })
 export class RegisterComponent implements OnInit {
 
-  registerUrl: string = "http://localhost:3000/api/Users";
+  registerUrl: string = "http://52.14.178.44:3000/api/Users";
+  //registerUrl: string = "http://localhost:3000/api/Users";
   register: Register;
   isValidFormSubmitted: boolean = false;
 
