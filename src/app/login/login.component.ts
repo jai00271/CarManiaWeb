@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
     this.http.post(this.loginUrl, body, httpOptions).subscribe(
       (data) => {
         this.loginResponse = data as LoginResponse;
-        this.router.navigate(['/app-cars']);
+        this.router.navigate(['/cars']);
       },
       err => {
         if (err.status == 401) {
