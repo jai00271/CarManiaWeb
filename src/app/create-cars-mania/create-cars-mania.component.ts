@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CarsEntity } from '../cars/cars.data';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { v4 as uuid } from 'uuid';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -12,7 +13,9 @@ import { v4 as uuid } from 'uuid';
 
 export class CreateCarsManiaComponent implements OnInit {
 
-  carSaveUrl: string = "http://52.14.178.44:3000/api/carsmania";
+  apiUrl = environment.apiUrl;
+  carSaveUrl: string = this.apiUrl + "carsmania";
+  //carSaveUrl: string = "http://52.14.178.44:3000/api/carsmania";
   //carSaveUrl: string = "http://localhost:3000/api/carsmania";
   car: CarsEntity;
   cars: CarsEntity[];
