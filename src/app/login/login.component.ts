@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private http: HttpClient, private router: Router) {
     this.login = new Login();
+    localStorage.clear();
   }
 
   ngOnInit() {
@@ -48,6 +49,7 @@ export class LoginComponent implements OnInit {
     this.http.post(this.loginUrl, body, httpOptions).subscribe(
       (data) => {
         this.loginResponse = data as LoginResponse;
+        localStorage.setItem('loginResponse', JSON.stringify(this.loginResponse));
         this.router.navigate(['/cars']);
       },
       err => {

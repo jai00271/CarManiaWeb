@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
-    'Content-Type':  'application/json'
+    'Content-Type': 'application/json'
   })
 };
 
@@ -24,29 +24,31 @@ export class RegisterComponent implements OnInit {
   register: Register;
   isValidFormSubmitted: boolean = false;
   registerResponse: RegisterResponse;
-  message:string;
+  message: string;
 
   constructor(private http: HttpClient, private router: Router) {
     this.register = new Register();
     this.registerResponse = new RegisterResponse();
+    localStorage.clear();
   }
 
   ngOnInit() {
   }
+
   submit(form) {
     this.isValidFormSubmitted = false;
     if (form.invalid) {
-        return;
+      return;
     }
     this.isValidFormSubmitted = true;
     this.Save();
   }
-  Save(){
+  Save() {
     this.register.emailVerified = true;
     let body = JSON.stringify(this.register);
 
-    this.http.post(this.registerUrl,body, httpOptions).subscribe(
-      (data)=>{
+    this.http.post(this.registerUrl, body, httpOptions).subscribe(
+      (data) => {
         this.registerResponse = data as RegisterResponse;
         this.router.navigate(['/login']);
       },

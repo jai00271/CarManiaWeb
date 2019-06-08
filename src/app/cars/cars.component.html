@@ -99,9 +99,9 @@
           <li class="app-search">
             <section class="col-sm-12">
               <div class="search-results style-3">
-                <input  class="app-search__input" type="search" placeholder="Search" ngxTypeahead
-                   [value]="query" [taList]="staticList" (taSelected)="handleStaticResultSelected($event)">
-                  <!-- class="col-sm-12 form-control" -->
+                <input class="app-search__input" type="search" placeholder="Search" ngxTypeahead [value]="query"
+                  [taList]="staticList" (taSelected)="handleStaticResultSelected($event)">
+                <!-- class="col-sm-12 form-control" -->
               </div>
             </section>
           </li>
@@ -114,7 +114,8 @@
         <div class="tile p-0">
           <ul class="nav flex-column nav-tabs user-tabs">
             <li class="nav-item" *ngFor="let cars of cars">
-              <a class="nav-link active show" style="cursor: pointer" data-toggle="tab" (click)='getCar(cars.id)'>{{ cars.carName }}</a>
+              <a class="nav-link active show" style="cursor: pointer" data-toggle="tab"
+                (click)='getCar(cars.id)'>{{ cars.carName }}</a>
             </li>
           </ul>
         </div>
@@ -133,59 +134,67 @@
                   <div class="tile-body">
                     <div class="timeline-post">
                       <ul class="post-utility">
-                        <li class="likes"><a href="#"><i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like</a></li>
+                        <li class="likes">
+                          <!-- <a href="#"></a>
+                            <i class="fa fa-fw fa-lg fa-thumbs-o-up" (click)="userLiked()"></i>Like
+                            {{likeCount}}
+                          </a> -->
+                          <button (click)="userLiked()"
+                            style="background-color: cadetblue; border-color: white; color: white; cursor: pointer">
+                            <i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like
+
+                          </button>
+                        </li>
+                        <span style="padding-left: 5%" *ngIf="likeCount>0">{{likeCount}}</span>
                       </ul>
                     </div>
                     <div class="messanger">
                       <div class="sender">
-                        <input type="text" placeholder="Please Write your comments here">
-                        <button class="btn btn-primary" type="button"><i
+                        <input type="text" class="form-control" placeholder="Please Write your comments here"
+                          name=userComment.comment [(ngModel)]="userComment.comment">
+                        <button class="btn btn-primary" type="button" (click)="submit()"><i
                             class="fa fa-lg fa-fw fa-paper-plane"></i></button>
                       </div>
                     </div>
                   </div>
                 </div>
 
+                <div *ngIf="userComments">
+                  <div  *ngFor="let userComment of userComments">
+                    <div class="timeline-post" *ngIf="userComment.comment">
+                      <div class="post-media"><a href="#"><img
+                            src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg"></a>
+                        <div class="content">
+                          <h5><a href="#">User Name</a></h5>
+                          <p class="text-muted"><small>2 January at 9:30</small></p>
+                        </div>
+                      </div>
+                      <div class="post-content" *ngIf="userComment.comment">
+                        <p>{{userComment.comment}}</p>
+                      </div>
+                      <div *ngIf="userComments == null || userComments.length == 0">
+                        <span>No Data Found!</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-                <div class="timeline-post">
-                  <div class="post-media"><a href="#"><img
-                        src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg"></a>
-                    <div class="content">
-                      <h5><a href="#">John Doe</a></h5>
-                      <p class="text-muted"><small>2 January at 9:30</small></p>
-                    </div>
-                  </div>
-                  <div class="post-content">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                      labore et dolore magna aliqua. </p>
-                  </div>
-                  <ul class="post-utility">
-                    <li class="likes"><a href="#"><i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like</a></li>
-                    <li class="shares"><a href="#"><i class="fa fa-fw fa-lg fa-share"></i>Share</a></li>
-                    <li class="comments"><i class="fa fa-fw fa-lg fa-comment-o"></i> 5 Comments</li>
-                  </ul>
-                </div>
-                <div class="timeline-post">
-                  <div class="post-media"><a href="#"><img
-                        src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg"></a>
-                    <div class="content">
-                      <h5><a href="#">John Doe</a></h5>
-                      <p class="text-muted"><small>2 January at 9:30</small></p>
-                    </div>
-                  </div>
-                  <div class="post-content">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                      labore et dolore magna aliqua. Ut enim ad minim veniam, quis tion ullamco laboris nisi ut aliquip
-                      ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-                      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                      officia deserunt mollit anim id est laborum.</p>
-                  </div>
-                  <ul class="post-utility">
-                    <li class="likes"><a href="#"><i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like</a></li>
-                    <li class="shares"><a href="#"><i class="fa fa-fw fa-lg fa-share"></i>Share</a></li>
-                    <li class="comments"><i class="fa fa-fw fa-lg fa-comment-o"></i> 5 Comments</li>
-                  </ul>
-                </div>
+                <!-- <table class="table datatable-basic" >
+                  <thead>
+                      <tr>
+                          <th><a href="#">User Id</a></th>
+                          <th><a href="#">Comment</a></th>
+                          <th><a href="#">Liked?</a></th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let userComment of userComments[0]">
+                          <td> {{userComment.UserId}} </td>
+                          <td> {{userComment.comment}} </td>
+                          <td> {{userComment.IsLiked}} </td>
+                      </tr>
+                  </tbody>
+              </table> -->
 
 
               </div>
@@ -198,290 +207,7 @@
             </div>
           </div>
 
-
-          <div class="tab-pane fade" id="user-settings">
-            <div class="row user">
-              <div class="col-md-8">
-                <div class="tile">
-                  <h3 class="tile-title">McLaren P1</h3>
-                  <!-- <div class="tile-body"><img src="images/mclaren.jpg" class="img-fluid"></div> -->
-                  <div class="tile-body">&nbsp;</div>
-                  <div class="tile-body">
-                    <div class="timeline-post">
-                      <ul class="post-utility">
-                        <li class="likes"><a href="#"><i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like</a></li>
-                      </ul>
-                    </div>
-                    <div class="messanger">
-                      <div class="sender">
-                        <input type="text" placeholder="Please Write your comments here">
-                        <button class="btn btn-primary" type="button"><i
-                            class="fa fa-lg fa-fw fa-paper-plane"></i></button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="timeline-post">
-                  <div class="post-media"><a href="#"><img
-                        src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg"></a>
-                    <div class="content">
-                      <h5><a href="#">John Doe</a></h5>
-                      <p class="text-muted"><small>2 January at 9:30</small></p>
-                    </div>
-                  </div>
-                  <div class="post-content">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                      labore et dolore magna aliqua. Ut enim ad minim veniam, quis tion ullamco laboris nisi ut aliquip
-                      ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-                      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                      officia deserunt mollit anim id est laborum.</p>
-                  </div>
-                  <ul class="post-utility">
-                    <li class="likes"><a href="#"><i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like</a></li>
-                    <li class="shares"><a href="#"><i class="fa fa-fw fa-lg fa-share"></i>Share</a></li>
-                    <li class="comments"><i class="fa fa-fw fa-lg fa-comment-o"></i> 5 Comments</li>
-                  </ul>
-                </div>
-                <div class="timeline-post">
-                  <div class="post-media"><a href="#"><img
-                        src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg"></a>
-                    <div class="content">
-                      <h5><a href="#">John Doe</a></h5>
-                      <p class="text-muted"><small>2 January at 9:30</small></p>
-                    </div>
-                  </div>
-                  <div class="post-content">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                      labore et dolore magna aliqua. Ut enim ad minim veniam, quis tion ullamco laboris nisi ut aliquip
-                      ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-                      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                      officia deserunt mollit anim id est laborum.</p>
-                  </div>
-                  <ul class="post-utility">
-                    <li class="likes"><a href="#"><i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like</a></li>
-                    <li class="shares"><a href="#"><i class="fa fa-fw fa-lg fa-share"></i>Share</a></li>
-                    <li class="comments"><i class="fa fa-fw fa-lg fa-comment-o"></i> 5 Comments</li>
-                  </ul>
-                </div>
-
-              </div>
-              <div class="col-md-4">
-                <!-- <div class="tile">
-                  <h3 class="tile-title">McLaren P1</h3>
-                  <div class="tile-body">The McLaren P1 is a British limited-production plug-in hybrid sports car
-                    produced by McLaren Automotive. Debuted at the 2012 Paris Motor Show,[5] retail began in the UK in
-                    October 2013 and all 375 units were sold out by November. Production ended in early December
-                    2015.[8] The United States accounted for 34% of the units and Europe for 26%.It is considered to be
-                    the successor to the F1, utilising hybrid power and Formula 1 technology, but does not have the same
-                    three-seat layout. It was later confirmed that the Speedtail served as the actual successor to the
-                    F1. Like the F1, the P1 has a mid-engine, rear wheel drive design that used a carbon fibre monocoque
-                    and roof structure safety cage concept called MonoCage, which is a development of the MonoCell first
-                    used in the MP4-12C and then in subsequent models. Its main competitors were the LaFerrari and the
-                    Porsche 918. They are all similar in specifications and performance, and in a race around
-                    Silverstone circuit they were all within half a second of each other, the P1 finishing first at
-                    58.24 seconds and the LaFerrari finishing last at 58.58 seconds; the 918 was in-between with 58.46
-                    seconds.P1 GTR (58 units)[10] and P1 LM (5 units) variants were produced after the initial run of
-                    375 cars.</div>
-                </div> -->
-              </div>
-            </div>
-          </div>
-
-
-          <div class="tab-pane fade" id="Lambo">
-            <div class="row user">
-              <div class="col-md-8">
-                <!--               <ul class="app-nav">
-        <li class="app-search">
-          <input class="app-search__input" type="search" placeholder="Search">
-          <button class="app-search__button"><i class="fa fa-search"></i></button>
-        </li>
-      </ul> -->
-                <div class="tile">
-                  <h3 class="tile-title">Lambhorghini Huracan</h3>
-                  <!-- <div class="tile-body"><img src="images/lambo.jpg" class="img-fluid"></div> -->
-                  <div class="tile-body">&nbsp;</div>
-                  <div class="tile-body">
-                    <div class="timeline-post">
-                      <ul class="post-utility">
-                        <li class="likes"><a href="#"><i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like</a></li>
-                      </ul>
-                    </div>
-                    <div class="messanger">
-                      <div class="sender">
-                        <input type="text" placeholder="Please Write your comments here">
-                        <button class="btn btn-primary" type="button"><i
-                            class="fa fa-lg fa-fw fa-paper-plane"></i></button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="timeline-post">
-                  <div class="post-media"><a href="#"><img
-                        src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg"></a>
-                    <div class="content">
-                      <h5><a href="#">John Doe</a></h5>
-                      <p class="text-muted"><small>2 January at 9:30</small></p>
-                    </div>
-                  </div>
-                  <div class="post-content">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                      labore et dolore magna aliqua. Ut enim ad minim veniam, quis tion ullamco laboris nisi ut aliquip
-                      ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-                      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                      officia deserunt mollit anim id est laborum.</p>
-                  </div>
-                  <ul class="post-utility">
-                    <li class="likes"><a href="#"><i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like</a></li>
-                    <li class="shares"><a href="#"><i class="fa fa-fw fa-lg fa-share"></i>Share</a></li>
-                    <li class="comments"><i class="fa fa-fw fa-lg fa-comment-o"></i> 5 Comments</li>
-                  </ul>
-                </div>
-                <div class="timeline-post">
-                  <div class="post-media"><a href="#"><img
-                        src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg"></a>
-                    <div class="content">
-                      <h5><a href="#">John Doe</a></h5>
-                      <p class="text-muted"><small>2 January at 9:30</small></p>
-                    </div>
-                  </div>
-                  <div class="post-content">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                      labore et dolore magna aliqua. Ut enim ad minim veniam, quis tion ullamco laboris nisi ut aliquip
-                      ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-                      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                      officia deserunt mollit anim id est laborum.</p>
-                  </div>
-                  <ul class="post-utility">
-                    <li class="likes"><a href="#"><i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like</a></li>
-                    <li class="shares"><a href="#"><i class="fa fa-fw fa-lg fa-share"></i>Share</a></li>
-                    <li class="comments"><i class="fa fa-fw fa-lg fa-comment-o"></i> 5 Comments</li>
-                  </ul>
-                </div>
-
-              </div>
-              <div class="col-md-4">
-                <!-- <div class="tile">
-                  <h3 class="tile-title">Lambhorghini Huracan</h3>
-                  <div class="tile-body">The McLaren P1 is a British limited-production plug-in hybrid sports car
-                    produced by McLaren Automotive. Debuted at the 2012 Paris Motor Show,[5] retail began in the UK in
-                    October 2013 and all 375 units were sold out by November. Production ended in early December
-                    2015.[8] The United States accounted for 34% of the units and Europe for 26%.It is considered to be
-                    the successor to the F1, utilising hybrid power and Formula 1 technology, but does not have the same
-                    three-seat layout. It was later confirmed that the Speedtail served as the actual successor to the
-                    F1. Like the F1, the P1 has a mid-engine, rear wheel drive design that used a carbon fibre monocoque
-                    and roof structure safety cage concept called MonoCage, which is a development of the MonoCell first
-                    used in the MP4-12C and then in subsequent models. Its main competitors were the LaFerrari and the
-                    Porsche 918. They are all similar in specifications and performance, and in a race around
-                    Silverstone circuit they were all within half a second of each other, the P1 finishing first at
-                    58.24 seconds and the LaFerrari finishing last at 58.58 seconds; the 918 was in-between with 58.46
-                    seconds.P1 GTR (58 units)[10] and P1 LM (5 units) variants were produced after the initial run of
-                    375 cars.</div>
-                </div> -->
-              </div>
-            </div>
-          </div>
-
-          <div class="tab-pane fade" id="bugg">
-            <div class="row user">
-              <div class="col-md-8">
-                <!--               <ul class="app-nav">
-        <li class="app-search">
-          <input class="app-search__input" type="search" placeholder="Search">
-          <button class="app-search__button"><i class="fa fa-search"></i></button>
-        </li>
-      </ul> -->
-                <div class="tile">
-                  <h3 class="tile-title">Buggati Chiron</h3>
-                  <!-- <div class="tile-body"><img src="images/buggati.png" class="img-fluid"></div> -->
-                  <div class="tile-body">&nbsp;</div>
-                  <div class="tile-body">
-                    <div class="timeline-post">
-                      <ul class="post-utility">
-                        <li class="likes"><a href="#"><i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like</a></li>
-                      </ul>
-                    </div>
-                    <div class="messanger">
-                      <div class="sender">
-                        <input type="text" placeholder="Please Write your comments here">
-                        <button class="btn btn-primary" type="button"><i
-                            class="fa fa-lg fa-fw fa-paper-plane"></i></button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="timeline-post">
-                  <div class="post-media"><a href="#"><img
-                        src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg"></a>
-                    <div class="content">
-                      <h5><a href="#">John Doe</a></h5>
-                      <p class="text-muted"><small>2 January at 9:30</small></p>
-                    </div>
-                  </div>
-                  <div class="post-content">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                      labore et dolore magna aliqua. Ut enim ad minim veniam, quis tion ullamco laboris nisi ut aliquip
-                      ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-                      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                      officia deserunt mollit anim id est laborum.</p>
-                  </div>
-                  <ul class="post-utility">
-                    <li class="likes"><a href="#"><i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like</a></li>
-                    <li class="shares"><a href="#"><i class="fa fa-fw fa-lg fa-share"></i>Share</a></li>
-                    <li class="comments"><i class="fa fa-fw fa-lg fa-comment-o"></i> 5 Comments</li>
-                  </ul>
-                </div>
-                <div class="timeline-post">
-                  <div class="post-media"><a href="#"><img
-                        src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg"></a>
-                    <div class="content">
-                      <h5><a href="#">John Doe</a></h5>
-                      <p class="text-muted"><small>2 January at 9:30</small></p>
-                    </div>
-                  </div>
-                  <div class="post-content">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                      labore et dolore magna aliqua. Ut enim ad minim veniam, quis tion ullamco laboris nisi ut aliquip
-                      ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-                      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                      officia deserunt mollit anim id est laborum.</p>
-                  </div>
-                  <ul class="post-utility">
-                    <li class="likes"><a href="#"><i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like</a></li>
-                    <li class="shares"><a href="#"><i class="fa fa-fw fa-lg fa-share"></i>Share</a></li>
-                    <li class="comments"><i class="fa fa-fw fa-lg fa-comment-o"></i> 5 Comments</li>
-                  </ul>
-                </div>
-
-              </div>
-              <div class="col-md-4">
-                <!-- <div class="tile">
-                  <h3 class="tile-title">Buggati Chiron</h3>
-                  <div class="tile-body">The McLaren P1 is a British limited-production plug-in hybrid sports car
-                    produced by McLaren Automotive. Debuted at the 2012 Paris Motor Show,[5] retail began in the UK in
-                    October 2013 and all 375 units were sold out by November. Production ended in early December
-                    2015.[8] The United States accounted for 34% of the units and Europe for 26%.It is considered to be
-                    the successor to the F1, utilising hybrid power and Formula 1 technology, but does not have the same
-                    three-seat layout. It was later confirmed that the Speedtail served as the actual successor to the
-                    F1. Like the F1, the P1 has a mid-engine, rear wheel drive design that used a carbon fibre monocoque
-                    and roof structure safety cage concept called MonoCage, which is a development of the MonoCell first
-                    used in the MP4-12C and then in subsequent models. Its main competitors were the LaFerrari and the
-                    Porsche 918. They are all similar in specifications and performance, and in a race around
-                    Silverstone circuit they were all within half a second of each other, the P1 finishing first at
-                    58.24 seconds and the LaFerrari finishing last at 58.58 seconds; the 918 was in-between with 58.46
-                    seconds.P1 GTR (58 units)[10] and P1 LM (5 units) variants were produced after the initial run of
-                    375 cars.</div>
-                </div> -->
-              </div>
-            </div>
-          </div>
-
         </div>
-
-
 
       </div>
 
