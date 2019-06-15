@@ -19,18 +19,18 @@ const httpOptions = {
 })
 export class CarsComponent implements OnInit {
 
-  //carsUrl = "http://localhost:3000/api/carsmania";
-  //carUrl = "http://localhost:3000/api/carsmania/";
   apiUrl = environment.apiUrl;
-  //carsUrl = "http://52.14.178.44:3000/api/carsmania";
-  //carUrl = "http://52.14.178.44:3000/api/carsmania/";
   carsUrl = this.apiUrl + "carsmania";
   carUrl = this.apiUrl + "carsmania/";
-  carSaveUrl: string;
+  userCommentUrl = this.apiUrl + "comments";
+
+  userCommentUpdateUrl: string;
   car: CarsEntity;
   cars: Array<CarsEntity> = [];
   userComment: UserComment;
   userComments: Array<UserComment> = [];
+  comments: Array<string> = [];
+  inputComment: string;
   showCarDetail: boolean;
   isLiked: boolean;
   likeCount: number = 0;
@@ -48,131 +48,136 @@ export class CarsComponent implements OnInit {
     if (loginResponse == null || loginResponse == undefined) {
       this.router.navigate(['/login']);
     }
+
     this.getCars().subscribe(
       (data) => {
         this.cars = data as CarsEntity[];
         this.staticList = this.cars.map(function (a) { return a["carName"]; });
         this.car = this.cars[0];
-        //this.userComments.push(JSON.parse(this.car.comments) as UserComment);
-        this.LoadComments();
       }
     );
-  }
-
-  private LoadComments() {
-    this.likeCount = 0;
-    if (this.car.comments != null || this.car.comments != undefined) {
-      this.userComments = [];
-      if (this.car.comments != "") {
-        var userCommentJson = JSON.parse(this.car.comments);
-        for (let index = 0; index < userCommentJson.length; index++) {
-          var userComment = userCommentJson[index] as UserComment;
-          //if (comment.comment != null || comment.comment != undefined) {
-            if(userComment.comment == undefined){
-              userComment.comment = null;
-            }
-          this.userComments.push(userComment);
-          //}
-          if (userComment.IsLiked) {
-            this.likeCount += 1;
+    this.getUserComments().subscribe(
+      (data) => {
+        this.userComments = data as UserComment[];
+        // this.userComment = this.userComments[0] == null ? new UserComment() : this.userComments[0];
+        this.userComments.forEach(element => {
+          if (element.isLike) {
+            this.likeCount++;
           }
-          else {
-            this.likeCount = 0;
-          }
-        }
+          element.comment.forEach(commentData => {
+            this.comments.push(commentData);
+          });
+        });
       }
-    } else {
-      this.userComments = [];
-    }
+    );
   }
 
   getCars() {
     return this.http.get(this.carsUrl);
   }
+
+  getUserComments() {
+    return this.http.get(this.userCommentUrl);
+  }
+
   getCar(id: string) {
     this.http.get(this.carUrl + id).subscribe(
       (data) => {
         this.car = data as CarsEntity;
-        this.LoadComments();
+        //this.LoadComments();
       }
     )
   }
   submit() {
     this.Save();
   }
+
   findIndexToUpdate(newItem) {
-    return newItem.UserId === this;
+    return newItem.userId === this;
   }
   Save() {
     let loginResponse = JSON.parse(localStorage.getItem('loginResponse')) as LoginResponse;
-    this.userComment.UserId = loginResponse.userId;
-    this.userComment.IsLiked = this.isLiked;
 
     let updateItem = this.userComments.find(this.findIndexToUpdate, loginResponse.userId);
     let index = this.userComments.indexOf(updateItem);
+
     if (index >= 0) {
       this.UpdateComment();
     }
     else {
-      this.userComments.push(this.userComment);
-      this.car.comments = JSON.stringify(this.userComments);
-      var carIdVal =
-      {
-        "id": this.car.id
-      };
-      this.carSaveUrl = this.apiUrl + "carsmania/update/?where=" + encodeURI(JSON.stringify(carIdVal)); //{"id":"5cf4b3762c470c162769e669"}
-      let body = JSON.stringify(this.car);
 
-      this.http.post(this.carSaveUrl, body, httpOptions).subscribe(
+      this.userComment.userId = loginResponse.userId;
+      this.userComment.carId = this.car.id;
+      this.userComment.isLike = this.isLiked == null ? false : true;
+
+      //var temp_comment = JSON.stringify(this.userComment.comment);
+      if (this.userComment.comment == undefined || this.userComment.comment == null) {
+        this.userComment.comment = [];
+      }
+      this.userComment.comment.push(this.inputComment);
+
+      this.userComments.push(this.userComment);
+      let body = this.userComments;
+
+      this.http.post(this.userCommentUrl, body, httpOptions).subscribe(
         (data) => {
-          //alert('success');
-          this.userComment.comment = "";
+          alert('success');
         },
         err => {
-          //alert('error');
+          alert('error');
         }
       )
     }
   }
   private UpdateComment() {
     let loginResponse = JSON.parse(localStorage.getItem('loginResponse')) as LoginResponse;
-    this.userComment.UserId = loginResponse.userId;
-    this.userComment.IsLiked = this.isLiked;
-    if(this.isLiked == undefined){
-      this.userComment.IsLiked = false;
-      this.isLiked = false;
-    }
 
-    let updateItem = this.userComments.find(this.findIndexToUpdate, loginResponse.userId);
-    let index = this.userComments.indexOf(updateItem);
-    // First like when there was no comment
-    if (index == -1) {
-      //index = 0;
-      this.Save();
-    }
-    else {
-      if (this.userComments.length > 0) {
-        if (this.userComments[index].IsLiked != this.userComment.IsLiked) {
-          this.userComments[index].IsLiked = this.userComment.IsLiked;
-        }
+    this.userComment = this.userComments.find(this.findIndexToUpdate, loginResponse.userId);
+
+    var userData =
+    {
+      "id": this.userComment.id
+    };
+    this.userCommentUpdateUrl = this.apiUrl + "comments/update?where=" + encodeURIComponent(JSON.stringify(userData));
+
+    this.userComment.comment.push(this.inputComment);
+
+    let body = JSON.stringify(this.userComment);
+
+    this.http.post(this.userCommentUpdateUrl, body, httpOptions).subscribe(
+      (data) => {
+        this.comments.push(this.inputComment);
+        this.inputComment = "";
+        alert('success');
+      },
+      err => {
+        alert('error');
       }
-      else {
-        this.userComments.push(this.userComment);
-      }
-      this.car.comments = JSON.stringify(this.userComments);
-      var carIdVal =
+    )
+  }
+
+  private UpdateLike() {
+    let loginResponse = JSON.parse(localStorage.getItem('loginResponse')) as LoginResponse;
+
+    this.userComment = this.userComments.find(this.findIndexToUpdate, loginResponse.userId);
+    if (!this.userComment.isLike) {
+      this.userComment.isLike = this.isLiked;
+
+      var userData =
       {
-        "id": this.car.id
+        "id": this.userComment.id
       };
-      this.carSaveUrl = this.apiUrl + "carsmania/update/?where=" + encodeURI(JSON.stringify(carIdVal)); //{"id":"5cf4b3762c470c162769e669"}
-      let body = JSON.stringify(this.car);
+      this.userCommentUpdateUrl = this.apiUrl + "comments/update?where=" + encodeURIComponent(JSON.stringify(userData));
 
-      this.http.post(this.carSaveUrl, body, httpOptions).subscribe(
+      let body = JSON.stringify(this.userComment);
+
+      this.http.post(this.userCommentUpdateUrl, body, httpOptions).subscribe(
         (data) => {
-          //alert('success');
+          this.likeCount++;
+          alert('success');
         },
         err => {
-          //alert('error');
+          alert('error');
         }
       )
     }
@@ -180,10 +185,9 @@ export class CarsComponent implements OnInit {
 
   userLiked() {
     this.isLiked = true;
-    this.likeCount++;
-    this.UpdateComment();
-
+    this.UpdateLike();
   }
+
   handleStaticResultSelected(result) {
     //this.search = result;
     this.car = this.cars.filter(function (item) {

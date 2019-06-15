@@ -2,12 +2,14 @@ export class CarsEntity{
   carName: string;
   carDesc: string;
   carImageUrl: string;
-  comments: string;
+  //comments: UserComment[];
   id: string;
 }
 
 export class UserComment{
-  UserId: string;
-  comment:string;
-  IsLiked: boolean;
+  userId: string;
+  carId: string
+  comment:Array<string>;
+  isLike: boolean;
+  id:string;
 }
