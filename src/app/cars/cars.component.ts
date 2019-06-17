@@ -23,6 +23,7 @@ export class CarsComponent implements OnInit {
   carsUrl = this.apiUrl + "carsmania";
   carUrl = this.apiUrl + "carsmania/";
   userCommentUrl = this.apiUrl + "comments";
+  userDetailsUrl = this.apiUrl + "Users/";
 
   userCommentUpdateUrl: string;
   car: CarsEntity;
@@ -48,15 +49,36 @@ export class CarsComponent implements OnInit {
     if (loginResponse == null || loginResponse == undefined) {
       this.router.navigate(['/login']);
     }
+    this.getCars();
+  }
 
-    this.getCars().subscribe(
+  getCars() {
+    return this.http.get(this.carsUrl).subscribe(
       (data) => {
         this.cars = data as CarsEntity[];
         this.staticList = this.cars.map(function (a) { return a["carName"]; });
         this.car = this.cars[0];
+        this.getUserComments();
       }
     );
-    this.getUserComments().subscribe(
+  }
+  getCar(id: string) {
+    this.http.get(this.carUrl + id).subscribe(
+      (data) => {
+        this.car = data as CarsEntity;
+        this.getUserComments();
+      }
+    )
+  }
+  getUserComments() {
+    this.comments = [];
+    this.likeCount = 0;
+    var carIdVal =
+    {
+      "carId": this.car.id
+    };
+    this.userCommentUrl += "?where=" + encodeURIComponent(JSON.stringify(carIdVal));
+    this.http.get(this.userCommentUrl).subscribe(
       (data) => {
         this.userComments = data as UserComment[];
         // this.userComment = this.userComments[0] == null ? new UserComment() : this.userComments[0];
@@ -69,25 +91,17 @@ export class CarsComponent implements OnInit {
           });
         });
       }
-    );
-  }
-
-  getCars() {
-    return this.http.get(this.carsUrl);
-  }
-
-  getUserComments() {
-    return this.http.get(this.userCommentUrl);
-  }
-
-  getCar(id: string) {
-    this.http.get(this.carUrl + id).subscribe(
-      (data) => {
-        this.car = data as CarsEntity;
-        //this.LoadComments();
-      }
     )
   }
+  // getUserDetails() {
+  //   this.http.get(this.userDetailsUrl + id).subscribe(
+  //     (data) => {
+  //       this.car = data as CarsEntity;
+  //       this.getUserComments();
+  //     }
+  //   )
+  // }
+
   submit() {
     this.Save();
   }
@@ -160,6 +174,7 @@ export class CarsComponent implements OnInit {
     let loginResponse = JSON.parse(localStorage.getItem('loginResponse')) as LoginResponse;
 
     this.userComment = this.userComments.find(this.findIndexToUpdate, loginResponse.userId);
+    //If user has already liked the post don't allow to update again.
     if (!this.userComment.isLike) {
       this.userComment.isLike = this.isLiked;
 

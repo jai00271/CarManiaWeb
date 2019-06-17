@@ -3,6 +3,7 @@ import { CarsEntity } from '../cars/cars.data';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { v4 as uuid } from 'uuid';
 import { environment } from 'src/environments/environment';
+import { DataTablesModule } from 'angular-datatables';
 
 
 @Component({
