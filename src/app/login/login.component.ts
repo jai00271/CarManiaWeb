@@ -49,7 +49,10 @@ export class LoginComponent implements OnInit {
     this.http.post(this.loginUrl, body, httpOptions).subscribe(
       (data) => {
         this.loginResponse = data as LoginResponse;
+        this.loginResponse = this.loginResponse;
+
         localStorage.setItem('loginResponse', JSON.stringify(this.loginResponse));
+        localStorage.setItem('userName', JSON.stringify(this.login.username));
         this.router.navigate(['/cars']);
       },
       err => {

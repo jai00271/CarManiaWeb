@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 // import { HttpClient } from 'selenium-webdriver/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { CarsEntity, UserComment } from './cars.data';
+import { CarsEntity, UserComment, UserNameWithComment } from './cars.data';
 import { environment } from 'src/environments/environment';
 import { LoginResponse } from '../login/login.data';
 import { Router } from '@angular/router';
@@ -25,16 +25,19 @@ export class CarsComponent implements OnInit {
   userCommentUrl = this.apiUrl + "comments";
   userDetailsUrl = this.apiUrl + "Users/";
 
-  userCommentUpdateUrl: string;
   car: CarsEntity;
   cars: Array<CarsEntity> = [];
   userComment: UserComment;
   userComments: Array<UserComment> = [];
-  comments: Array<string> = [];
+  //comments: Array<string> = [];
+  userNameWithComment: UserNameWithComment;
+  userNameWithComments: Array<UserNameWithComment> = [];
   inputComment: string;
   showCarDetail: boolean;
   isLiked: boolean;
   likeCount: number = 0;
+  loginResponse: LoginResponse;
+  currentUserNameFromCache: string;
 
   public staticList = [];
   public query = '';
@@ -45,62 +48,68 @@ export class CarsComponent implements OnInit {
   }
 
   ngOnInit() {
-    let loginResponse = JSON.parse(localStorage.getItem('loginResponse')) as LoginResponse;
-    if (loginResponse == null || loginResponse == undefined) {
+    this.loginResponse = JSON.parse(localStorage.getItem('loginResponse')) as LoginResponse;
+    if (this.loginResponse == null || this.loginResponse == undefined) {
       this.router.navigate(['/login']);
     }
+    this.currentUserNameFromCache = JSON.parse(localStorage.getItem('userName')) as string;
     this.getCars();
   }
-
+  //This method loads on component initialization and loads all the cars details
+  // When page loads we get user comment for 1st car as it wil default to load.
   getCars() {
     return this.http.get(this.carsUrl).subscribe(
       (data) => {
         this.cars = data as CarsEntity[];
         this.staticList = this.cars.map(function (a) { return a["carName"]; });
         this.car = this.cars[0];
-        this.getUserComments();
+        this.getUserComments(this.cars[0].id);
       }
     );
   }
+  //This method gets 1 specific car details as when we change car we need to get values from DB
   getCar(id: string) {
     this.http.get(this.carUrl + id).subscribe(
       (data) => {
         this.car = data as CarsEntity;
-        this.getUserComments();
+        this.getUserComments(this.car.id);
       }
     )
   }
-  getUserComments() {
-    this.comments = [];
+  //This method gets all the user comments details for a specific car
+  getUserComments(carId: string) {
+    //this.comments = [];
+    this.userNameWithComments = [];
     this.likeCount = 0;
-    var carIdVal =
-    {
-      "carId": this.car.id
-    };
-    this.userCommentUrl += "?where=" + encodeURIComponent(JSON.stringify(carIdVal));
-    this.http.get(this.userCommentUrl).subscribe(
+    var carIdVal = { "where": { "carId": carId } };
+
+    var url = this.userCommentUrl + "?filter=" + encodeURIComponent(JSON.stringify(carIdVal));
+    this.http.get(url).subscribe(
       (data) => {
         this.userComments = data as UserComment[];
         // this.userComment = this.userComments[0] == null ? new UserComment() : this.userComments[0];
+        var userName;
         this.userComments.forEach(element => {
           if (element.isLike) {
             this.likeCount++;
           }
+          userName = element.username;
           element.comment.forEach(commentData => {
-            this.comments.push(commentData);
+            //this.comments.push(commentData);
+            this.userNameWithComment = new UserNameWithComment();
+            if (commentData != '') {
+              this.userNameWithComment.comment = commentData;
+              this.userNameWithComment.username = userName;
+              this.userNameWithComments.push(this.userNameWithComment);
+            }
           });
+          // this.comments.forEach(element => {
+
+          // });
         });
       }
     )
   }
-  // getUserDetails() {
-  //   this.http.get(this.userDetailsUrl + id).subscribe(
-  //     (data) => {
-  //       this.car = data as CarsEntity;
-  //       this.getUserComments();
-  //     }
-  //   )
-  // }
 
   submit() {
     this.Save();
@@ -110,70 +119,106 @@ export class CarsComponent implements OnInit {
     return newItem.userId === this;
   }
   Save() {
-    let loginResponse = JSON.parse(localStorage.getItem('loginResponse')) as LoginResponse;
-
-    let updateItem = this.userComments.find(this.findIndexToUpdate, loginResponse.userId);
+    let updateItem = this.userComments.find(this.findIndexToUpdate, this.loginResponse.userId);
     let index = this.userComments.indexOf(updateItem);
 
     if (index >= 0) {
       this.UpdateComment();
     }
     else {
-
-      this.userComment.userId = loginResponse.userId;
-      this.userComment.carId = this.car.id;
-      this.userComment.isLike = this.isLiked == null ? false : true;
-
-      //var temp_comment = JSON.stringify(this.userComment.comment);
-      if (this.userComment.comment == undefined || this.userComment.comment == null) {
-        this.userComment.comment = [];
-      }
-      this.userComment.comment.push(this.inputComment);
-
-      this.userComments.push(this.userComment);
-      let body = this.userComments;
-
-      this.http.post(this.userCommentUrl, body, httpOptions).subscribe(
-        (data) => {
-          alert('success');
-        },
-        err => {
-          alert('error');
-        }
-      )
+      this.InsertComment();
     }
   }
-  private UpdateComment() {
-    let loginResponse = JSON.parse(localStorage.getItem('loginResponse')) as LoginResponse;
 
-    this.userComment = this.userComments.find(this.findIndexToUpdate, loginResponse.userId);
+  private InsertComment() {
+    var userComment = new UserComment();
+    userComment.userId = this.loginResponse.userId;
+    userComment.carId = this.car.id;
+    userComment.isLike = this.isLiked == null ? false : true;
+    userComment.username = this.currentUserNameFromCache;
+
+    if (userComment.comment == undefined || userComment.comment == null) {
+      userComment.comment = [];
+    }
+    userComment.comment.push(this.inputComment);
+    //this.userComments.push(this.userComment);
+
+    let body = JSON.stringify(userComment);
+    this.http.post(this.userCommentUrl, body, httpOptions).subscribe((data) => {
+      var userNameWithComment = new UserNameWithComment();
+      userNameWithComment.comment = this.inputComment;
+      userNameWithComment.username = this.currentUserNameFromCache;
+      this.userNameWithComments.push(userNameWithComment);
+      //This is required because we need userComments updated here so that we can check whether index>0 or not,
+      //I mean whether it is an update or insert.
+      this.userComments.push(this.userComment);
+
+      this.inputComment = "";
+      console.log('success');
+    },
+      err => {
+        console.log('error');
+      });
+  }
+
+  private UpdateComment() {
+    this.userComment = this.userComments.find(this.findIndexToUpdate, this.loginResponse.userId);
 
     var userData =
     {
       "id": this.userComment.id
     };
-    this.userCommentUpdateUrl = this.apiUrl + "comments/update?where=" + encodeURIComponent(JSON.stringify(userData));
+    var userCommentUpdateUrl = this.apiUrl + "comments/update?where=" + encodeURIComponent(JSON.stringify(userData));
 
     this.userComment.comment.push(this.inputComment);
 
     let body = JSON.stringify(this.userComment);
 
-    this.http.post(this.userCommentUpdateUrl, body, httpOptions).subscribe(
+    this.http.post(userCommentUpdateUrl, body, httpOptions).subscribe(
       (data) => {
-        this.comments.push(this.inputComment);
+        //this.comments.push(this.inputComment);
+        var userNameWithComment = new UserNameWithComment();
+        userNameWithComment.comment = this.inputComment;
+        userNameWithComment.username = this.currentUserNameFromCache;
+        this.userNameWithComments.push(userNameWithComment);
+
+        //This is required because we need userComments updated here so that we can check whether index>0 or not,
+        //I mean whether it is an update or insert.
+        this.userComments.push(this.userComment);
         this.inputComment = "";
-        alert('success');
+        console.log('success');
       },
       err => {
-        alert('error');
+        console.log('error');
       }
     )
   }
+  private InsertLike() {
+    var userComment = new UserComment();
+    userComment.userId = this.loginResponse.userId;
+    userComment.carId = this.car.id;
+    userComment.isLike = this.isLiked == null ? false : true;
+    userComment.username = this.currentUserNameFromCache;
 
+    if (userComment.comment == undefined || userComment.comment == null) {
+      userComment.comment = [];
+    }
+    userComment.comment.push("");
+
+    let body = JSON.stringify(userComment);
+    this.http.post(this.userCommentUrl, body, httpOptions).subscribe((data) => {
+      this.likeCount++;
+      console.log('success');
+      //This is required because we need userComments updated here so that we can check whether index>0 or not,
+      //I mean whether it is an update or insert.
+      this.userComments.push(this.userComment);
+    },
+      err => {
+        console.log('error');
+      });
+  }
   private UpdateLike() {
-    let loginResponse = JSON.parse(localStorage.getItem('loginResponse')) as LoginResponse;
-
-    this.userComment = this.userComments.find(this.findIndexToUpdate, loginResponse.userId);
+    this.userComment = this.userComments.find(this.findIndexToUpdate, this.loginResponse.userId);
     //If user has already liked the post don't allow to update again.
     if (!this.userComment.isLike) {
       this.userComment.isLike = this.isLiked;
@@ -182,17 +227,17 @@ export class CarsComponent implements OnInit {
       {
         "id": this.userComment.id
       };
-      this.userCommentUpdateUrl = this.apiUrl + "comments/update?where=" + encodeURIComponent(JSON.stringify(userData));
+      var userCommentUpdateUrl = this.apiUrl + "comments/update?where=" + encodeURIComponent(JSON.stringify(userData));
 
       let body = JSON.stringify(this.userComment);
 
-      this.http.post(this.userCommentUpdateUrl, body, httpOptions).subscribe(
+      this.http.post(userCommentUpdateUrl, body, httpOptions).subscribe(
         (data) => {
           this.likeCount++;
-          alert('success');
+          console.log('success');
         },
         err => {
-          alert('error');
+          console.log('error');
         }
       )
     }
@@ -200,7 +245,22 @@ export class CarsComponent implements OnInit {
 
   userLiked() {
     this.isLiked = true;
-    this.UpdateLike();
+    let updateItem = this.userComments.find(this.findIndexToUpdate, this.loginResponse.userId);
+    let index = this.userComments.indexOf(updateItem);
+
+    //Entity intialized as {}
+    if (this.userComment == undefined || Object.entries(this.userComment).length === 0) {
+      if (index < 0)
+        this.InsertLike();
+      else
+        this.UpdateLike();
+    }
+    else {
+      if (index < 0)
+        this.InsertLike();
+      else
+        this.UpdateLike();
+    }
   }
 
   handleStaticResultSelected(result) {

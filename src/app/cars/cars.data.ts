@@ -12,4 +12,10 @@ export class UserComment{
   comment:Array<string>;
   isLike: boolean;
   id:string;
+  username: string;
+}
+
+export class UserNameWithComment{
+  username: string;
+  comment:string;
 }
