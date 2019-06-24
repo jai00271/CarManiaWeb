@@ -34,7 +34,7 @@ export class CarsComponent implements OnInit {
   userNameWithComments: Array<UserNameWithComment> = [];
   inputComment: string;
   showCarDetail: boolean;
-  isLiked: boolean;
+  isLiked: boolean = false;
   likeCount: number = 0;
   loginResponse: LoginResponse;
   currentUserNameFromCache: string;
@@ -97,15 +97,12 @@ export class CarsComponent implements OnInit {
           element.comment.forEach(commentData => {
             //this.comments.push(commentData);
             this.userNameWithComment = new UserNameWithComment();
-            if (commentData != '') {
+            //if (commentData != '') {
               this.userNameWithComment.comment = commentData;
               this.userNameWithComment.username = userName;
               this.userNameWithComments.push(this.userNameWithComment);
-            }
+            //}
           });
-          // this.comments.forEach(element => {
-
-          // });
         });
       }
     )
@@ -134,7 +131,7 @@ export class CarsComponent implements OnInit {
     var userComment = new UserComment();
     userComment.userId = this.loginResponse.userId;
     userComment.carId = this.car.id;
-    userComment.isLike = this.isLiked == null ? false : true;
+    userComment.isLike = this.isLiked;
     userComment.username = this.currentUserNameFromCache;
 
     if (userComment.comment == undefined || userComment.comment == null) {
@@ -151,7 +148,7 @@ export class CarsComponent implements OnInit {
       this.userNameWithComments.push(userNameWithComment);
       //This is required because we need userComments updated here so that we can check whether index>0 or not,
       //I mean whether it is an update or insert.
-      this.userComments.push(this.userComment);
+      this.userComments.push(userComment);
 
       this.inputComment = "";
       console.log('success');
@@ -164,9 +161,14 @@ export class CarsComponent implements OnInit {
   private UpdateComment() {
     this.userComment = this.userComments.find(this.findIndexToUpdate, this.loginResponse.userId);
 
+    //"id": this.userComment.id // we are not using this coz when user insert 1 comment we insert the record in
+    // userComment list here without id and next time when user tries to insert 1 more comment, then we don't
+    // have this id to update the respective field. In such cases we need to use carId and userId combination.
+
     var userData =
     {
-      "id": this.userComment.id
+      carId: this.userComment.carId,
+      userId: this.userComment.userId
     };
     var userCommentUpdateUrl = this.apiUrl + "comments/update?where=" + encodeURIComponent(JSON.stringify(userData));
 
@@ -197,13 +199,13 @@ export class CarsComponent implements OnInit {
     var userComment = new UserComment();
     userComment.userId = this.loginResponse.userId;
     userComment.carId = this.car.id;
-    userComment.isLike = this.isLiked == null ? false : true;
+    userComment.isLike = this.isLiked;
     userComment.username = this.currentUserNameFromCache;
 
     if (userComment.comment == undefined || userComment.comment == null) {
       userComment.comment = [];
     }
-    userComment.comment.push("");
+    // userComment.comment.push("");
 
     let body = JSON.stringify(userComment);
     this.http.post(this.userCommentUrl, body, httpOptions).subscribe((data) => {
@@ -211,7 +213,7 @@ export class CarsComponent implements OnInit {
       console.log('success');
       //This is required because we need userComments updated here so that we can check whether index>0 or not,
       //I mean whether it is an update or insert.
-      this.userComments.push(this.userComment);
+      this.userComments.push(userComment);
     },
       err => {
         console.log('error');
@@ -225,7 +227,8 @@ export class CarsComponent implements OnInit {
 
       var userData =
       {
-        "id": this.userComment.id
+        carId: this.userComment.carId,
+        userId: this.userComment.userId
       };
       var userCommentUpdateUrl = this.apiUrl + "comments/update?where=" + encodeURIComponent(JSON.stringify(userData));
 
@@ -244,6 +247,7 @@ export class CarsComponent implements OnInit {
   }
 
   userLiked() {
+    //When user clicks on like we trigger this method and set the flag
     this.isLiked = true;
     let updateItem = this.userComments.find(this.findIndexToUpdate, this.loginResponse.userId);
     let index = this.userComments.indexOf(updateItem);
