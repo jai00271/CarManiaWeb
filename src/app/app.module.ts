@@ -3,7 +3,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgxTypeaheadModule } from 'ngx-typeahead';
-import {MatMenuModule,  MatInputModule, MatButtonModule, MatSelectModule, MatIconModule } from '@angular/material';
+import { MatPaginatorModule , MatSort, MatPaginator, MatTableDataSource, MatMenuModule,  MatInputModule, MatButtonModule, MatSelectModule, MatIconModule, MatTableModule } from '@angular/material';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatSortModule} from '@angular/material/sort';
 
 import { AppComponent } from './app.component';
 import { CarsComponent } from './cars/cars.component';
@@ -13,6 +15,7 @@ import { CreateCarsManiaComponent } from './create-cars-mania/create-cars-mania.
 import { RegisterComponent } from './register/register.component';
 import { DataTablesModule } from 'angular-datatables';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DialogBoxComponent } from './create-cars-mania/dialog-box/dialog-box.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CarsComponent,
     LoginComponent,
     CreateCarsManiaComponent,
-    RegisterComponent
+    RegisterComponent,
+    DialogBoxComponent
   ],
   imports: [
     BrowserModule,
@@ -33,6 +37,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatMenuModule,
     NgxTypeaheadModule,
     DataTablesModule,
+    MatTableModule,
+    MatDialogModule,
+    MatSortModule,
+    MatPaginatorModule,
     RouterModule.forRoot([
       //{ path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'login', component: LoginComponent },
@@ -42,6 +50,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       { path: '**', redirectTo: 'login' }
     ]),
     BrowserAnimationsModule
+  ],
+  entryComponents: [
+    DialogBoxComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,33 +1,52 @@
-<form class="login-form" #loginForm="ngForm" (ngSubmit)="submit(loginForm)">
-  <div class="panel panel-default">
-    <div class="panel-heading">Save Cars Info</div>
-    <div class="panel-body">
-        <div class="col-sm-12" style="margin-top: 20px; height:25%">
-        <div style="color: green" ng-if="message">{{ message }}</div>
-        <div class="col-sm-1">
-          <label for="CarName">Car Name</label>
-        </div>
-        <div class="col-sm-1">
-          <input type="text" class="form-control" required name=car.carName [(ngModel)]="car.carName"
-            placeholder="Name">
-        </div>
-        <br />
-        <div class="col-sm-1">
-          <label for="CarDescription">Car Desc</label>
-        </div>
-        <div class="col-sm-1"><input type="text" class="form-control" required name=car.carDesc
-            [(ngModel)]="car.carDesc" placeholder="Description">
-        </div>
-        <br />
-        <div class="col-sm-1">
-          <label for="CarImage">Car Image Url</label>
-        </div>
-        <div class="col-sm-1">
-          <textarea type="text" class="form-control" style="width: 35%; height: 25%" rows="3" required
-            name=car.carImageUrl [(ngModel)]="car.carImageUrl" placeholder="Image URL"></textarea>
-        </div>
-      </div>
-      <button type="submit">Save</button>
-    </div>
-  </div>
-</form>
+<!-- app.component.html -->
+
+<div class="container text-center" style="background: #009688;">
+
+  <mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+  </mat-form-field>
+
+  <button mat-button (click)="openDialog('Add',{})" mat-flat-button color="primary">Add Row</button>
+
+  <table mat-table [dataSource]="dataSource" #mytable class="my-table mat-elevation-z8" matSort>
+
+    <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+    <!-- Position Column -->
+    <!-- <ng-container matColumnDef="position">
+      <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+    </ng-container> -->
+
+    <!-- Car Name Column -->
+    <ng-container matColumnDef="carName">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let element"> {{element.carName}} </td>
+    </ng-container>
+
+    <!-- Car Description Column -->
+    <ng-container matColumnDef="carDesc">
+      <th mat-header-cell *matHeaderCellDef> Description </th>
+      <td mat-cell *matCellDef="let element"> {{element.carDesc}} </td>
+    </ng-container>
+
+    <!-- Car Image Url Column -->
+    <ng-container matColumnDef="carImageUrl">
+      <th mat-header-cell *matHeaderCellDef> Image Url </th>
+      <td mat-cell *matCellDef="let element"> {{element.carImageUrl}} </td>
+    </ng-container>
+
+    <!-- Action Column -->
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef> Action </th>
+      <td mat-cell *matCellDef="let element" class="action-link">
+        <a (click)="openDialog('Update',element)">Edit</a> |
+        <a (click)="openDialog('Delete',element)">Delete</a>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
