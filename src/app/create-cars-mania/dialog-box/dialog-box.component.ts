@@ -66,7 +66,7 @@ export class DialogBoxComponent implements OnInit {
     carWithoutId.carName = car.carName;
     var carData =
     {
-      carId: car.id
+      id: car.id
     };
     car.id = null;
     var carUpdateUrl = this.carUrl + "update?where=" + encodeURIComponent(JSON.stringify(carData));
