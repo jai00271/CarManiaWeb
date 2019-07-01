@@ -124,10 +124,11 @@
                     <div class="timeline-post">
                       <ul class="post-utility">
                         <li class="likes">
-                          <button (click)="userLiked()"
+                          <!-- <button (click)="userLiked()"
                             style="background-color: cadetblue; border-color: white; color: white; cursor: pointer">
                             <i class="fa fa-fw fa-lg fa-thumbs-o-up"></i>Like
-                          </button>
+                          </button> -->
+                          <input style="height: 60%;" type="image" id="myimage" src="assets\clap-hands.png" (click)="userLiked()"/>
                         </li>
                         <span style="padding-left: 5%" *ngIf="likeCount>0">{{likeCount}}</span>
                       </ul>
