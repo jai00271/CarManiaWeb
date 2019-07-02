@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject, ChangeDetectorRef } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { v4 as uuid } from 'uuid';
 import { environment } from 'src/environments/environment';
-import { DataTablesModule } from 'angular-datatables';
 import { MatPaginator, MatDialog, MatTable, MatTableDataSource, MatSort, MAT_DIALOG_DATA } from '@angular/material';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import {Observable} from 'rxjs';
@@ -23,7 +22,7 @@ export class CreateCarsManiaComponent implements OnInit {
   isValidFormSubmitted: boolean = false;
   message: string = "";
   dataSource;
-  displayedColumns: string[] = ['carName', 'carDesc', 'carImageUrl', 'action'];
+  displayedColumns: string[] = ['id','carName', 'carDesc', 'carImageUrl', 'action'];
 
   @ViewChild(MatTable,{static:true}) table: MatTable<any>;
   @ViewChild(MatPaginator,{static:true}) paginator: MatPaginator;
@@ -34,6 +33,11 @@ export class CreateCarsManiaComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadCars();
+    // this.refresh();
+  }
+
+  private loadCars() {
     this.getCars().subscribe(data => {
       var res = data as Car[];
       var position = 1;
@@ -44,13 +48,12 @@ export class CreateCarsManiaComponent implements OnInit {
         car.carName = element.carName;
         car.id = element.id;
         car.position = position;
-        position ++;
+        position++;
         this.cars.push(car);
       });
-      this.dataSource  = new MatTableDataSource(this.cars);
+      this.dataSource = new MatTableDataSource(this.cars);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-
     });
   }
 
@@ -87,8 +90,8 @@ export class CreateCarsManiaComponent implements OnInit {
     this.cars.push(car);
     this.dataSource._updateChangeSubscription()  // THIS WILL DO
     this.table.renderRows();
-
   }
+
   updateRowData(row_obj){
     // this.dataSource = this.dataSource.filter((value,key)=>{
     //   if(value.id == row_obj.id){
@@ -96,10 +99,19 @@ export class CreateCarsManiaComponent implements OnInit {
     //   }
     //   return true;
     // });
+    this.refresh();
+    return true;
   }
+
   deleteRowData(row_obj){
-    var index = this.cars.indexOf(row_obj);
-    this.cars.splice(index, 1);
-    this.dataSource._updateChangeSubscription()  // THIS WILL DO
+    // this.dataSource = this.dataSource.filter((value,key)=>{
+    //   return value.id != row_obj.id;
+    // });
+    this.refresh();
+  }
+  refresh() {
+    this.getCars().subscribe((data: Car[]) => {
+      this.dataSource.data = data;
+    });
   }
 }
