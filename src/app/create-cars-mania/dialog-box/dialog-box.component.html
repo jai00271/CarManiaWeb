@@ -1,15 +1,15 @@
 <!-- dialog-box.component.html -->
 <!-- <h1 mat-dialog-title>Row Action :: <strong>{{action}}</strong></h1> -->
 <div mat-dialog-content>
-  <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
+  <mat-form-field style="display: inline;" *ngIf="action != 'Delete'; else elseTemplate">
     <input placeholder="{{action}} Name" matInput [(ngModel)]="local_data.carName" required>
   </mat-form-field>
   <br />
-  <mat-form-field *ngIf="action != 'Delete';">
+  <mat-form-field style="display: inline;" *ngIf="action != 'Delete';">
     <input placeholder="{{action}} Desc" matInput [(ngModel)]="local_data.carDesc" required>
   </mat-form-field>
   <br />
-  <mat-form-field *ngIf="action != 'Delete';">
+  <mat-form-field style="display: inline;" *ngIf="action != 'Delete';">
     <input placeholder="{{action}} ImageUrl" matInput [(ngModel)]="local_data.carImageUrl" required>
   </mat-form-field>
   <ng-template #elseTemplate>

@@ -67,7 +67,9 @@ export class CreateCarsManiaComponent implements OnInit {
   openDialog(action,obj) {
     obj.action = action;
     const dialogRef = this.dialog.open(DialogBoxComponent, {
-      width: '250px',
+      //width: '250px',
+      height: '50%',
+      width: '50%',
       data:obj
     });
 
