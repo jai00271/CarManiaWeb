@@ -85,13 +85,14 @@ export class CreateCarsManiaComponent implements OnInit {
   }
 
   addRowData(row_obj){
-    var car = new Car();
-    car.carName = row_obj.carName;
-    car.carDesc = row_obj.carDesc;
-    car.carImageUrl = row_obj.carImageUrl;
-    this.cars.push(car);
-    this.dataSource._updateChangeSubscription()  // THIS WILL DO
-    this.table.renderRows();
+    // var car = new Car();
+    // car.carName = row_obj.carName;
+    // car.carDesc = row_obj.carDesc;
+    // car.carImageUrl = row_obj.carImageUrl;
+    // this.cars.push(car);
+    // this.dataSource._updateChangeSubscription()  // THIS WILL DO
+    // this.table.renderRows();
+    this.refresh();
   }
 
   updateRowData(row_obj){
