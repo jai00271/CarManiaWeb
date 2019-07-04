@@ -30,7 +30,7 @@ export class CarsComponent implements OnInit {
   userComment: UserComment;
   userComments: Array<UserComment> = [];
   //comments: Array<string> = [];
-  userNameWithComment: UserNameWithComment;
+  //userNameWithComment: UserNameWithComment;
   userNameWithComments: Array<UserNameWithComment> = [];
   inputComment: string;
   showCarDetail: boolean;
@@ -97,14 +97,15 @@ export class CarsComponent implements OnInit {
           userName = element.username;
           element.comment.forEach(commentData => {
             //this.comments.push(commentData);
-            this.userNameWithComment = new UserNameWithComment();
+            var userNameWithComment = new UserNameWithComment();
             //if (commentData != '') {
               var commentToBeSplit = commentData.split('^')[0];
               var commentDate = commentData.split('^')[1];
-              this.userNameWithComment.comment = commentToBeSplit; //commentData;
-              this.userNameWithComment.username = userName;
-              this.userNameWithComment.commentedDate = commentDate;
-              this.userNameWithComments.push(this.userNameWithComment);
+              userNameWithComment.comment = commentToBeSplit; //commentData;
+              userNameWithComment.username = userName;
+              userNameWithComment.commentedDate = commentDate;
+              this.userNameWithComments.unshift(userNameWithComment);
+              //this.userNameWithComments.push(this.userNameWithComment);
             //}
           });
         });
@@ -150,7 +151,10 @@ export class CarsComponent implements OnInit {
       userNameWithComment.comment = this.inputComment;
       userNameWithComment.username = this.currentUserNameFromCache;
       userNameWithComment.commentedDate = commentedTime.toLocaleString();
-      this.userNameWithComments.push(userNameWithComment);
+      //this.userNameWithComments.push(userNameWithComment);
+      //[userNameWithComment].concat(this.userNameWithComments);
+      this.userNameWithComments.unshift(userNameWithComment);
+
       //This is required because we need userComments updated here so that we can check whether index>0 or not,
       //I mean whether it is an update or insert.
       this.userComments.push(userComment);
@@ -184,12 +188,13 @@ export class CarsComponent implements OnInit {
 
     this.http.post(userCommentUpdateUrl, body, httpOptions).subscribe(
       (data) => {
-        //this.comments.push(this.inputComment);
         var userNameWithComment = new UserNameWithComment();
         userNameWithComment.comment = this.inputComment;
         userNameWithComment.username = this.currentUserNameFromCache;
         userNameWithComment.commentedDate = commentedTime.toLocaleString();
-        this.userNameWithComments.push(userNameWithComment);
+        //this.userNameWithComments.push(userNameWithComment);
+        //[userNameWithComment].concat(this.userNameWithComments);
+        this.userNameWithComments.unshift(userNameWithComment);
 
         //This is required because we need userComments updated here so that we can check whether index>0 or not,
         //I mean whether it is an update or insert.
