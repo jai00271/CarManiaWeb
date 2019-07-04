@@ -22,7 +22,7 @@ export class CreateCarsManiaComponent implements OnInit {
   isValidFormSubmitted: boolean = false;
   message: string = "";
   dataSource;
-  displayedColumns: string[] = ['id','carName', 'carDesc', 'carImageUrl', 'action'];
+  displayedColumns: string[] = ['action', 'id','carName', 'carDesc', 'carImageUrl'];
 
   @ViewChild(MatTable,{static:true}) table: MatTable<any>;
   @ViewChild(MatPaginator,{static:true}) paginator: MatPaginator;

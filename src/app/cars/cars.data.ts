@@ -18,4 +18,5 @@ export class UserComment{
 export class UserNameWithComment{
   username: string;
   comment:string;
+  commentedDate:string;
 }

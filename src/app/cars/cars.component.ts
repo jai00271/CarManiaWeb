@@ -81,6 +81,7 @@ export class CarsComponent implements OnInit {
     //this.comments = [];
     this.userNameWithComments = [];
     this.likeCount = 0;
+    this.isLiked = false;
     var carIdVal = { "where": { "carId": carId } };
 
     var url = this.userCommentUrl + "?filter=" + encodeURIComponent(JSON.stringify(carIdVal));
@@ -98,8 +99,11 @@ export class CarsComponent implements OnInit {
             //this.comments.push(commentData);
             this.userNameWithComment = new UserNameWithComment();
             //if (commentData != '') {
-              this.userNameWithComment.comment = commentData;
+              var commentToBeSplit = commentData.split('^')[0];
+              var commentDate = commentData.split('^')[1];
+              this.userNameWithComment.comment = commentToBeSplit; //commentData;
               this.userNameWithComment.username = userName;
+              this.userNameWithComment.commentedDate = commentDate;
               this.userNameWithComments.push(this.userNameWithComment);
             //}
           });
@@ -129,6 +133,7 @@ export class CarsComponent implements OnInit {
 
   private InsertComment() {
     var userComment = new UserComment();
+    var commentedTime = new Date;
     userComment.userId = this.loginResponse.userId;
     userComment.carId = this.car.id;
     userComment.isLike = this.isLiked;
@@ -137,14 +142,14 @@ export class CarsComponent implements OnInit {
     if (userComment.comment == undefined || userComment.comment == null) {
       userComment.comment = [];
     }
-    userComment.comment.push(this.inputComment);
-    //this.userComments.push(this.userComment);
+    userComment.comment.push(this.inputComment + "^" + commentedTime);
 
     let body = JSON.stringify(userComment);
     this.http.post(this.userCommentUrl, body, httpOptions).subscribe((data) => {
       var userNameWithComment = new UserNameWithComment();
       userNameWithComment.comment = this.inputComment;
       userNameWithComment.username = this.currentUserNameFromCache;
+      userNameWithComment.commentedDate = commentedTime.toLocaleString();
       this.userNameWithComments.push(userNameWithComment);
       //This is required because we need userComments updated here so that we can check whether index>0 or not,
       //I mean whether it is an update or insert.
@@ -160,6 +165,7 @@ export class CarsComponent implements OnInit {
 
   private UpdateComment() {
     this.userComment = this.userComments.find(this.findIndexToUpdate, this.loginResponse.userId);
+    var commentedTime = new Date;
 
     //"id": this.userComment.id // we are not using this coz when user insert 1 comment we insert the record in
     // userComment list here without id and next time when user tries to insert 1 more comment, then we don't
@@ -172,7 +178,7 @@ export class CarsComponent implements OnInit {
     };
     var userCommentUpdateUrl = this.apiUrl + "comments/update?where=" + encodeURIComponent(JSON.stringify(userData));
 
-    this.userComment.comment.push(this.inputComment);
+    this.userComment.comment.push(this.inputComment + "^" + commentedTime);
 
     let body = JSON.stringify(this.userComment);
 
@@ -182,6 +188,7 @@ export class CarsComponent implements OnInit {
         var userNameWithComment = new UserNameWithComment();
         userNameWithComment.comment = this.inputComment;
         userNameWithComment.username = this.currentUserNameFromCache;
+        userNameWithComment.commentedDate = commentedTime.toLocaleString();
         this.userNameWithComments.push(userNameWithComment);
 
         //This is required because we need userComments updated here so that we can check whether index>0 or not,
